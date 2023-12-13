@@ -1,5 +1,5 @@
 '''
-DIGITAL TELADOCS STATION IS A PLATFORM AIMED AT MAKING MEDICAL SERVICES MORE ACCESSIBLE 
+VirtuCare IS A PLATFORM AIMED AT MAKING MEDICAL SERVICES MORE ACCESSIBLE 
 TO ALL.IT SOLVES ISSUES LIKE HIGH TRANSPORT COSTS TO HOSPITALS, LONG QUEUES IN HOSPITALS BY USE
 OF A DIGITAL MONITORING SYSTEM HENCE EASENING THE COMMUNICATION BETWEEN THE DOCTOR AND THE PATIENT
 IF THE CONDITIONS OF THE PATIENT WORSENS IN RELATION TO THE ENVIRONMENT E.G BECAUSE OF HIGH ENVIRONMENTAL TEMPERATURE
@@ -23,11 +23,11 @@ import random #generates random numbers
 
 
 
-result = pyfiglet.figlet_format(" Station Teladocs", width=180)
+result = pyfiglet.figlet_format(" VirtuCare", width=180)
 welcome_message = """
 ****************************************************
 
-Welcome to Digital Teladocs Station,the best Telemedicine Monitoring System. 
+Welcome to VirtuCare,the best Telemedicine Monitoring System. 
 Let us connect you to the best medical practitioners!
 
 ****************************************************
@@ -88,7 +88,7 @@ def login_as_doctor():
         print("Please enter your credentials to login as a doctor")
         username = input("Enter your username: ")
         password = input("Enter your password: ")
-        conn = sqlite3.connect("teladocs.db") #connect to the SQlite database file (teladocs.db)
+        conn = sqlite3.connect("virtucare.db") #connect to the SQlite database file (teladocs.db)
         cursor = conn.cursor()#Shows result from a query on the SQLiteDatabase 
         cursor.execute("SELECT * FROM doctor WHERE username = ? AND password_ = ?", (username, password))
         user = cursor.fetchone()# retrieves only  first row from the Doctor table
@@ -136,7 +136,7 @@ def register_as_patient():
     residence = input("Enter your residence: ")
     bloodgroup = input("Enter your blood group: ")
     if password_ == confirmpassword:
-        conn = sqlite3.connect("teladocs.db")
+        conn = sqlite3.connect("virtucare.db")
         cursor = conn.cursor()
         # patient_id = int(uuid.uuid4())
         cursor.execute("INSERT INTO Patient VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (PatientID, fullname, email, username, gender, dob, phone, residence, password_, age, bloodgroup))
@@ -162,7 +162,7 @@ def register_as_doctor():
     end_time = input("Enter your end time: ")
     
     if password == confirmpassword:
-        conn = sqlite3.connect("teladocs.db")
+        conn = sqlite3.connect("virtucare.db")
         cursor = conn.cursor()
         cursor.execute("INSERT INTO Doctor VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)", (DoctorID,username,password,confirmpassword,name, age,gender, phone,email,speciality, start_time, end_time))   
         conn.commit()#saves all the modifications made since the first commit
@@ -178,7 +178,7 @@ def book_appointment(user):
     start_time = input("Enter your start time: ")
     end_time = input("Enter your end time: ")
     specialist = input("Enter the specialist you would like to see: ")
-    conn = sqlite3.connect("teladocs.db")
+    conn = sqlite3.connect("virtucare.db")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Doctor WHERE starttime = ? AND endtime = ?", (start_time, end_time))
     doctors = cursor.fetchall()#fetches all the rows from the Doctor table on start time and end time
@@ -187,7 +187,7 @@ def book_appointment(user):
     #print(doctors)
     for doctor in doctors:
         if doctor[4] == specialist:#fetches the specialist from the Doctor table
-            conn = sqlite3.connect("teladocs.db")
+            conn = sqlite3.connect("virtucare.db")
             cursor = conn.cursor()
             cursor.execute("INSERT INTO Appointment VALUES (?,?,?,?,?)", (AppointmentID, start_time, end_time, user[1] ,doctor[1]))#inserts all the details including the doctor assigned to patient into the Appointment table
             conn.close()
@@ -195,7 +195,7 @@ def book_appointment(user):
             break
 #function to view all the appointments booked by patients to a specific doctor
 def view_appointments(doctor):
-    conn = sqlite3.connect("teladocs.db")
+    conn = sqlite3.connect("virtucare.db")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Appointment WHERE doctors_name = ?", (doctor[1],))
     appointments = cursor.fetchall()#fetches all the rows from the Appointment table so that the doctor can view them
@@ -205,7 +205,7 @@ def view_appointments(doctor):
 #function that enables the doctor access the emails of the patients to send them the links to the video call    
 def attend_to_patient(appointment):
     patient_name = appointment[3]
-    conn = sqlite3.connect("teladocs.db")
+    conn = sqlite3.connect("virtucare.db")
     cursor = conn.cursor()
     cursor.execute("SELECT email FROM Patient WHERE fullname = ?", (patient_name,))
     email = cursor.fetchone()
@@ -213,7 +213,7 @@ def attend_to_patient(appointment):
     print("Sending email to patient with address: ", email[0])
     
 def mark_attended(appointment):
-    conn = sqlite3.connect("teladocs.db")
+    conn = sqlite3.connect("virtucare.db")
     cursor = conn.cursor()
     cursor.execute("DELETE FROM Appointment WHERE patient = ?", (appointment[3],))
     conn.commit()
