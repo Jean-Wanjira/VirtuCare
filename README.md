@@ -1,5 +1,5 @@
 
-VirtuCare Station
+
 VirtuCare Station is a telemedicine platform designed to make medical services more accessible to all. It addresses issues such as high transport costs to hospitals and long queues by employing a digital monitoring system, thereby improving communication between doctors and patients. Additionally, it takes environmental conditions into account, like high temperatures, which may worsen the patient's condition.
 
 Features
